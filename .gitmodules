@@ -1,0 +1,3 @@
+[submodule "miscs/obfuscator"]
+	path = miscs/obfuscator
+	url = https://github.com/SaulBerrenson/WinApiObfuscator.git
