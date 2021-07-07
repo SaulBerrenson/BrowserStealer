@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3.1)
 cmake_policy(VERSION 3.3.1)
 
-set(PROJECT_NAME "ChromePass")
+set(PROJECT_NAME "BrowserCollector")
 project(${PROJECT_NAME})
 
 include(cmake/CheckVariable.cmake)
@@ -29,21 +29,5 @@ if(BUILD_EXECUTABLE)
     file(GLOB_RECURSE SOURCES_FILES_EXE "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c*")
     add_executable(${PROJECT_NAME} ${HEADERS_FILES} ${SOURCES_FILES_EXE})
 endif()
-
-#if(BUILD_DLL)
-   # set(SOURCES_FILES_DLL 
-       #                     "${CMAKE_CURRENT_SOURCE_DIR}/src/ChromeParser.cpp"
-      #                      "${CMAKE_CURRENT_SOURCE_DIR}/src/sqlite3.c"
-   # )
-
-    #if(BUILD_SHARED_DLL)
-     #   set(FLAG_DLL SHARED)
-    #else()
-     #   set(FLAG_DLL STATIC)
-    #endif()
-    
-   # add_library(${PROJECT_NAME}Ex ${FLAG_DLL} ${HEADERS_FILES} ${SOURCES_FILES_DLL})
-#endif()
-
 
 
