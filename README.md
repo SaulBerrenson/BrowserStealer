@@ -9,7 +9,7 @@ Simple password stealer for chrome all version (includes 80+), microsoft edge br
 - Hidden import table (hidden - shell32, functions from kernel32, bcrypt and etc.)
 - Small size
 - Full actions based on hidden winapi calls
-- 
+
 ## Rule of using
 Software provides AS IS. Author not answer for any illigal using software.
 
