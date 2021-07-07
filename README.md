@@ -12,6 +12,9 @@ Simple password stealer for chrome all version (includes 80+) and all gecko base
 ## Rule of using
 Software publish AS IS. Author not answer for any illigal using software.
 
+## Language
+c++14
+
 ## Small proof of concept
 
 ![alt text](https://raw.githubusercontent.com/SaulBerrenson/BrowserStealer/main/miscs/proof/DOoS5hYVlu.gif)
