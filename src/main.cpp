@@ -26,12 +26,7 @@ int main()
 	print_results(parser->collect_data());
 	clear(parser);
 	
-	parser = collector::create_collector(collector::BrowserType::Chrome);
-	print_results(parser->collect_data());
-	clear(parser);
-
-
-	parser = collector::create_collector(collector::BrowserType::Edge);
+	parser = collector::create_collector(collector::BrowserType::Chromium);
 	print_results(parser->collect_data());
 	clear(parser);
 	
