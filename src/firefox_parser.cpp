@@ -1,4 +1,4 @@
-﻿#include "FirefoxParser.h"
+﻿#include "firefox_parser.h"
 
 #include <iostream>
 #include <json.hpp>
@@ -7,13 +7,13 @@
 #include "FirefoxDecryptor.h"
 #include "RegEditHelper.h"
 
-FirefoxParser::FirefoxParser()
+firefox_parser::firefox_parser()
 {
 
 }
 
 
-List<AccountData> FirefoxParser::collect_data()
+List<AccountData> firefox_parser::collect_data()
 {
 	auto browsers = this->get_mozilla_browsers();
 
@@ -58,7 +58,7 @@ List<AccountData> FirefoxParser::collect_data()
 	return m_account_data;
 }
 
-List<String> FirefoxParser::get_mozilla_browsers()
+List<String> firefox_parser::get_mozilla_browsers()
 {
 	const auto m_path_local_data = IO::get_app_folder(CSIDL_APPDATA);
 
@@ -74,7 +74,7 @@ List<String> FirefoxParser::get_mozilla_browsers()
 	return std::move(foundBrowsers);
 }
 
-String FirefoxParser::get_profile_dir(const String& dir_localdata)
+String firefox_parser::get_profile_dir(const String& dir_localdata)
 {
 	try
 	{		
@@ -107,7 +107,7 @@ String FirefoxParser::get_profile_dir(const String& dir_localdata)
 	return "";
 }
 
-String FirefoxParser::get_mozilla_program_dir()
+String firefox_parser::get_mozilla_program_dir()
 {
 	auto start_browsers = regedit_helper::get_subkeys(HKEY_LOCAL_MACHINE, R"(SOFTWARE\Clients\StartMenuInternet)");
 	//auto mozilla_browser = regedit_helper::subkeys_contains(start_browsers, "Firefox");
@@ -124,7 +124,7 @@ String FirefoxParser::get_mozilla_program_dir()
 	return "";
 }
 
-List<AccountData> FirefoxParser::get_encrypted_data(const String& path_to_json)
+List<AccountData> firefox_parser::get_encrypted_data(const String& path_to_json)
 {
 	String data_logins;
 	List<AccountData> accounts_data;
@@ -155,7 +155,7 @@ List<AccountData> FirefoxParser::get_encrypted_data(const String& path_to_json)
 	return accounts_data;
 }
 
-bool FirefoxParser::prepare_imports(String profile_dir, String& out_temp_dir)
+bool firefox_parser::prepare_imports(String profile_dir, String& out_temp_dir)
 {
 	String profile_name;
 	

