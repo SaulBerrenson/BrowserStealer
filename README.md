@@ -12,3 +12,16 @@ Simple stealer for chrome all version (includes 80+) and all gecko based browser
 ## Small proof of concept
 
 ![alt text](https://raw.githubusercontent.com/SaulBerrenson/BrowserStealer/main/miscs/proof/DOoS5hYVlu.gif)
+
+### List Browsers:
+
+- Chrome
+- Firefox
+- Waterfox
+- Cyberfox
+- K-Meleon
+- Thunderbird
+- IceDragon
+- BlackHaw
+- Pale Moon
+
