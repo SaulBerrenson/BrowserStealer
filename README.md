@@ -10,7 +10,7 @@ Simple password stealer for chrome all version (includes 80+), microsoft edge br
 - Full actions based on hidden winapi calls
 - 
 ## Rule of using
-Software publish AS IS. Author not answer for any illigal using software.
+Software provides AS IS. Author not answer for any illigal using software.
 
 ## Language
 c++14
