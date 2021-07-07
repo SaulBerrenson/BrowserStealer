@@ -1,4 +1,5 @@
-# BrowserStealer (Chrome - all chromium based and Firefox - all gecko based)
+# BrowserStealer (Chrome / Firefox / Microsoft Edge)
+## (Chrome - all chromium based and Firefox - all gecko based)
 Simple password stealer for chrome all version (includes 80+), microsoft edge browser,includes all chromium based browsers, and all gecko based browser (firefox etc.). 
 
 - It's can find firefox from non standart location.
