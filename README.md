@@ -9,3 +9,6 @@ Simple stealer for chrome all version (includes 80+) and all gecko based browser
 - Small size
 - Full actions based on hidden winapi calls
 
+## Small proof of concept
+
+![alt text](https://raw.githubusercontent.com/SaulBerrenson/BrowserStealer/main/miscs/proof/DOoS5hYVlu.gif)
