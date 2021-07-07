@@ -3,44 +3,34 @@
 #include "firefox_parser.h"
 #include "FactoryCollector.h"
 
-int main()
+
+void print_results(const List<AccountData>& data_accounts)
 {
-	
-
-
-
-	
-
-	auto firefox_parser = collector::create_collector(collector::BrowserType::Mozilla);
-
-	auto accounts = firefox_parser->collect_data();
-
-	for (const auto& data : accounts)
+	for (const auto& data : data_accounts)
 	{
 		std::cout << "Url: " << data.Url << std::endl << "Username: " << data.Username << std::endl << "Password: " << data.Password << std::endl;
 		std::cout << "--------------------------------------------------------------------------------" << std::endl;
 	}
+}
 
-	if(firefox_parser)
-	{
-		delete firefox_parser;
-		firefox_parser = nullptr;
-	}
+void clear(ICollector* collector)
+{
+	if (!collector) return;
+	delete collector;
+	collector = nullptr;
+}
+
+int main()
+{
 	
+	auto parser = collector::create_collector(collector::BrowserType::Mozilla);	
+	print_results(parser->collect_data());
+	clear(parser);
 	
-	auto chrome_parser = collector::create_collector(collector::BrowserType::Chrome);
-
-	for (const auto& data : chrome_parser->collect_data())
-	{
-		std::cout << "Url: " <<data.Url << std::endl << "Username: " << data.Username << std::endl << "Password: " << data.Password << std::endl;
-		std::cout << "--------------------------------------------------------------------------------" << std::endl;
-	}
-
-	if (chrome_parser)
-	{
-		delete chrome_parser;
-		chrome_parser = nullptr;
-	}
+	parser = collector::create_collector(collector::BrowserType::Chrome);
+	print_results(parser->collect_data());
+	clear(parser);
+	
 	
 	system("pause");
 	return 0;
