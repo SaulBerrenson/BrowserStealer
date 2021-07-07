@@ -27,11 +27,15 @@
 
 
 
-class EXPORT_F chrome_parser : public ICollector
+class EXPORT_F chromium_parser : public ICollector
 {
 public:
-	chrome_parser() = default;
-	~chrome_parser() = default;
+	explicit chromium_parser(const String& m_chromium_base_path = R"(\Google\Chrome)")
+		: m_hAlg(nullptr), m_hKey(nullptr), m_chromium_base_path(m_chromium_base_path)
+	{
+	}
+
+	~chromium_parser() = default;
 
 	List<AccountData> collect_data() override;
 	
@@ -51,6 +55,7 @@ private:
 	BCRYPT_ALG_HANDLE m_hAlg;
 	BCRYPT_KEY_HANDLE m_hKey;
 	String m_chrome_sqlite_path;
+	const String m_chromium_base_path;
 };
 
  

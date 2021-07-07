@@ -21,8 +21,7 @@ void clear(ICollector* collector)
 }
 
 int main()
-{
-	
+{	
 	auto parser = collector::create_collector(collector::BrowserType::Mozilla);	
 	print_results(parser->collect_data());
 	clear(parser);
@@ -30,7 +29,11 @@ int main()
 	parser = collector::create_collector(collector::BrowserType::Chrome);
 	print_results(parser->collect_data());
 	clear(parser);
-	
+
+
+	parser = collector::create_collector(collector::BrowserType::Edge);
+	print_results(parser->collect_data());
+	clear(parser);
 	
 	system("pause");
 	return 0;

