@@ -1,9 +1,9 @@
-# BrowserStealer (Chrome and Firefox)
-Simple password stealer for chrome all version (includes 80+), microsoft edge browser and all gecko based browser (firefox etc.). 
+# BrowserStealer (Chrome - all chromium based and Firefox - all gecko based)
+Simple password stealer for chrome all version (includes 80+), microsoft edge browser,includes all chromium based browsers, and all gecko based browser (firefox etc.). 
 
 - It's can find firefox from non standart location.
 - All WinApi calls has import table obfucation.
-- Support Chromium Browsers (Google Chrome, Microsoft Edge)
+- Support Chromium based Browsers (Google Chrome, Microsoft Edge and etc.)
 - Support Gecko based browsers (Firefox and etc.) (warning: if browser x64 you need use x64 build)
 - Hidden import table (hidden - shell32, functions from kernel32, bcrypt and etc.)
 - Small size
@@ -23,6 +23,26 @@ c++14
 
 - Chrome
 - Microsoft Edge
+- Chromium
+- Brave-Browser
+- Epic Privacy Browser
+- Amigo
+- Vivaldi
+- Orbitum
+- Atom
+- Kometa
+- Comodo Dragon
+- Torch
+- Slimjet
+- 360Browser
+- Maxthon3
+- K-Melon
+- Sputnik
+- Nichrome
+- CocCoc Browser
+- Uran
+- Chromodo
+- Yandex (old)
 - Firefox
 - Waterfox
 - Cyberfox
