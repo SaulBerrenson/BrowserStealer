@@ -20,36 +20,39 @@ c++14
 
 ![alt text](https://raw.githubusercontent.com/SaulBerrenson/BrowserStealer/main/miscs/proof/DOoS5hYVlu.gif)
 
-### List Browsers:
+### Support List Browsers:
 
-- Chrome
-- Microsoft Edge
-- Chromium
-- Brave-Browser
-- Epic Privacy Browser
-- Amigo
-- Vivaldi
-- Orbitum
-- Atom
-- Kometa
-- Comodo Dragon
-- Torch
-- Slimjet
-- 360Browser
-- Maxthon3
-- K-Melon
-- Sputnik
-- Nichrome
-- CocCoc Browser
-- Uran
-- Chromodo
-- Yandex (old)
-- Firefox
-- Waterfox
-- Cyberfox
-- K-Meleon
-- Thunderbird
-- IceDragon
-- BlackHaw
-- Pale Moon
+| № | Browser Name |
+| --- | --- |
+| 1 | Chrome |
+| 2 | Microsoft Edge |
+| 3 | Chromium |
+| 4 | Brave - Browser |
+| 5 | Epic Privacy Browser |
+| 6 | Amigo |
+| 7 | Vivaldi |
+| 8 | Orbitum |
+| 9 | Atom |
+| 10 | Kometa |
+| 11 | Comodo Dragon |
+| 12 | Torch |
+| 13 | Slimjet |
+| 14 | 360Browser |
+| 15 | Maxthon3 |
+| 16 | K - Melon |
+| 17 | Sputnik |
+| 18 | Nichrome |
+| 19 | CocCoc Browser |
+| 20 | Uran |
+| 21 | Chromodo |
+| 22 | Yandex(old) |
+| 23 | Firefox |
+| 24 | Waterfox |
+| 25 | Cyberfox |
+| 26 | K - Meleon |
+| 27 | Thunderbird |
+| 28 | IceDragon |
+| 29 | BlackHaw |
+| 30 | Pale Moon |
+
 
