@@ -9,7 +9,6 @@ include(cmake/CheckVariable.cmake)
 set(CMAKE_CXX_STANDARD 14)
 
 if(MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} /EHa")	
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi /Ox /O2 /EHa")	
 endif()
 
