@@ -5,6 +5,7 @@ Simple stealer for chrome all version (includes 80+) and all gecko based browser
 - All WinApi calls has import table obfucation.
 - Support Chrome Browser
 - Support Gecko based browsers (Firefox and etc.) (warning: if browser x64 you need use x64 build)
-- Hidden import table
+- Hidden import table (hidden - shell32, functions from kernel32, bcrypt and etc.)
 - Small size
+- Full actions based on hidden winapi calls
 
