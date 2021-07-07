@@ -1,5 +1,5 @@
 # BrowserStealer (Chrome and Firefox)
-Simple stealer for chrome all version (includes 80+) and all gecko based browser (firefox etc.). 
+Simple password stealer for chrome all version (includes 80+) and all gecko based browser (firefox etc.). 
 
 - It's can find firefox from non standart location.
 - All WinApi calls has import table obfucation.
