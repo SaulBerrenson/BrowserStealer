@@ -66,4 +66,6 @@ Software provides AS IS. Author not answer for any illigal using software.
 ### Build Manual without IDE
 &#8987;
 
+### Additional Features
+Html report - &#8987;
 --------------------------------------------------
