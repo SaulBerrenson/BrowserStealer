@@ -49,3 +49,13 @@ struct AccountData
 	String Username;
 	String Password;
 };
+
+
+struct CookieData
+{
+	String HostKey;
+	String Name;
+	String Value;
+	String Path;
+	String ExpireUTC;	
+};

