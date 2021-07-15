@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include "Forwards.h"
 
+template <class T>
 class ICollector
 {
 public:
 	ICollector() = default;
 	virtual ~ICollector() = default;
-	virtual List<AccountData> collect_data() = 0;	
+	virtual List<T> collect_data() = 0;	
 };
