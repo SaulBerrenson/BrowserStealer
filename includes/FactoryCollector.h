@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "ICollector.h"
 #include "ChromeParser.h"
-#include "firefox_parser.h"
+#include "FireFoxParser.h"
 
 namespace collector
 {
@@ -17,8 +17,8 @@ namespace collector
 		switch (type_collector)
 		{
 			case BrowserType::None: return nullptr;
-			case BrowserType::Chromium: return new chromium_parser();
-			case BrowserType::Mozilla: return new firefox_parser();
+			case BrowserType::Chromium: return new ChromiumParser();
+			case BrowserType::Mozilla: return new FireFoxParser();
 			default: return nullptr;;
 		}
 	}

