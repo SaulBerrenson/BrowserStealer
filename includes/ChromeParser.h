@@ -23,7 +23,7 @@
 
 
 
-class EXPORT_F ChromiumParser : public ICollector
+class EXPORT_F ChromiumParser : public ICollector<AccountData>
 {
 public:
 	explicit ChromiumParser()

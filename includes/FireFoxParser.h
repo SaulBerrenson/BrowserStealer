@@ -5,7 +5,7 @@
 #include "iniparser.h"
 
 
-class FireFoxParser : public ICollector
+class FireFoxParser : public ICollector<AccountData>
 {
 public:
 	FireFoxParser();
