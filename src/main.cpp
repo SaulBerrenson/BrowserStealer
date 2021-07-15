@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include "ChromeParser.h"
-#include "firefox_parser.h"
+#include "FireFoxParser.h"
 #include "FactoryCollector.h"
 
 
