@@ -2,7 +2,6 @@
 
 
 #include <iostream>
-#include <json.hpp>
 
 #include "FileOperations.h"
 #include "FirefoxDecryptor.h"

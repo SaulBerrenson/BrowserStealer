@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <json.hpp>
+#include <cJson.h>
 
 #include "Forwards.h"
 #include "IDecryptor.h"
@@ -28,6 +28,10 @@ private:
 
     bool init_key_for_chrome_80(PBYTE pbKey, ULONG sizeKey);
 
+
+    cJSON* find_logins_node(cJSON* input_node, const char* pattern);
+
+	
     BCRYPT_ALG_HANDLE m_hAlg;
     BCRYPT_KEY_HANDLE m_hKey;
     int m_password_size = 0;

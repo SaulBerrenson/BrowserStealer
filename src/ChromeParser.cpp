@@ -3,7 +3,7 @@
 #include <memory>
 #include <sqlite3.h>
 #include <Base64.h>
-#include <json.hpp>
+#include <cJSON.h>
 
 #include "ChromeDecryptor.h"
 

