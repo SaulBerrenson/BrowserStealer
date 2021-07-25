@@ -8,10 +8,10 @@ namespace regedit_helper
     static List<String> get_subkeys(HKEY RootKey, char* subKey, unsigned int tabs = 0)
     {
 
-        const auto func_RegOpenKeyEx = WinApiImport<f_RegOpenKeyEx>::get_func("RegOpenKeyEx", "advapi32.dll");
-        const auto func_RegQueryInfoKey = WinApiImport<f_RegQueryInfoKey>::get_func("RegQueryInfoKey", "advapi32.dll");
-        const auto func_RegEnumKeyEx = WinApiImport<f_RegEnumKeyEx>::get_func("RegEnumKeyEx", "advapi32.dll");
-        const auto func_RegCloseKey = WinApiImport<f_RegCloseKey>::get_func("RegCloseKey", "advapi32.dll");
+        const auto func_RegOpenKeyEx = WinApiImport<f_RegOpenKeyEx>::get("RegOpenKeyEx", "advapi32.dll");
+        const auto func_RegQueryInfoKey = WinApiImport<f_RegQueryInfoKey>::get("RegQueryInfoKey", "advapi32.dll");
+        const auto func_RegEnumKeyEx = WinApiImport<f_RegEnumKeyEx>::get("RegEnumKeyEx", "advapi32.dll");
+        const auto func_RegCloseKey = WinApiImport<f_RegCloseKey>::get("RegCloseKey", "advapi32.dll");
 
         List<String> list_subkeys;
 
@@ -69,9 +69,9 @@ namespace regedit_helper
 
     static String ReadRegValue(HKEY root, String key, String name)
     {
-        const auto func_RegOpenKeyEx = WinApiImport<f_RegOpenKeyEx>::get_func("RegOpenKeyEx", "advapi32.dll");
-        const auto func_f_RegQueryValueEx = WinApiImport<f_RegQueryValueEx>::get_func("RegQueryValueEx", "advapi32.dll");
-        const auto func_RegCloseKey = WinApiImport<f_RegCloseKey>::get_func("RegCloseKey", "advapi32.dll");    	
+        const auto func_RegOpenKeyEx = WinApiImport<f_RegOpenKeyEx>::get("RegOpenKeyEx", "advapi32.dll");
+        const auto func_f_RegQueryValueEx = WinApiImport<f_RegQueryValueEx>::get("RegQueryValueEx", "advapi32.dll");
+        const auto func_RegCloseKey = WinApiImport<f_RegCloseKey>::get("RegCloseKey", "advapi32.dll");    	
     	
         HKEY hKey;
         if (func_RegOpenKeyEx(root, key.c_str(), 0, KEY_READ, &hKey) != ERROR_SUCCESS)

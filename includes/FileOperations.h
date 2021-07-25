@@ -5,7 +5,7 @@ namespace IO
 {
 	inline  bool is_exist_dir(String& dir)
 	{
-		const auto func_GetFileAttributesA = WinApiImport<f_GetFileAttributesA>::get_func("GetFileAttributesA", "Kernel32.dll");
+		const auto func_GetFileAttributesA = WinApiImport<f_GetFileAttributesA>::get("GetFileAttributesA", "Kernel32.dll");
 		DWORD dwAttr = func_GetFileAttributesA(dir.c_str());
 		if (dwAttr != 0xffffffff && (dwAttr & FILE_ATTRIBUTE_DIRECTORY)) { return true; }
 		return false;
@@ -14,8 +14,8 @@ namespace IO
 	
 	inline  bool is_file_exists(const std::string& file)
 	{
-		const auto func_FindFirstFile = WinApiImport<f_FindFirstFile>::get_func("FindFirstFile", "kernel32.dll");
-		const auto func_FindClose = WinApiImport<f_FindClose>::get_func("FindClose", "kernel32.dll");
+		const auto func_FindFirstFile = WinApiImport<f_FindFirstFile>::get("FindFirstFile", "kernel32.dll");
+		const auto func_FindClose = WinApiImport<f_FindClose>::get("FindClose", "kernel32.dll");
 
 		WIN32_FIND_DATA FindFileData;
 		HANDLE handle = func_FindFirstFile(file.c_str(), &FindFileData);
@@ -33,10 +33,10 @@ namespace IO
 	{
 		if(!is_file_exists(path_to_file)) return false;
 
-		const auto func_GetFileSize = WinApiImport<f_GetFileSize>::get_func("GetFileSize", "kernel32.dll");
-		const auto func_CreateFileA = WinApiImport<f_CreateFileA>::get_func("CreateFileA", "kernel32.dll");
-		const auto func_CloseHandle = WinApiImport<f_CloseHandle>::get_func("CloseHandle", "kernel32.dll");
-		const auto func_ReadFile = WinApiImport<f_ReadFile>::get_func("ReadFile", "kernel32.dll");
+		const auto func_GetFileSize = WinApiImport<f_GetFileSize>::get("GetFileSize", "kernel32.dll");
+		const auto func_CreateFileA = WinApiImport<f_CreateFileA>::get("CreateFileA", "kernel32.dll");
+		const auto func_CloseHandle = WinApiImport<f_CloseHandle>::get("CloseHandle", "kernel32.dll");
+		const auto func_ReadFile = WinApiImport<f_ReadFile>::get("ReadFile", "kernel32.dll");
 		
 		auto hFile = func_CreateFileA(path_to_file.c_str(), GENERIC_READ, 0, 0, OPEN_ALWAYS, 0, 0);
 		
@@ -71,7 +71,7 @@ namespace IO
 	{
 		try
 		{
-			const auto func_SHFileOperation = WinApiImport<f_SHFileOperation>::get_func("SHFileOperation", "shell32.dll");
+			const auto func_SHFileOperation = WinApiImport<f_SHFileOperation>::get("SHFileOperation", "shell32.dll");
 
 			SHFILEOPSTRUCT file_op = {
 				NULL,
@@ -96,9 +96,9 @@ namespace IO
 	
 	inline void get_subdirs(List<String>& output, const String& path)
 	{
-		const auto func_GetFullPathName = WinApiImport<f_GetFullPathName>::get_func("GetFullPathName", "kernel32.dll");
-		const auto func_FindFirstFile = WinApiImport<f_FindFirstFile>::get_func("FindFirstFile", "kernel32.dll");
-		const auto func_FindNextFile = WinApiImport<f_FindNextFile>::get_func("FindNextFile", "kernel32.dll");
+		const auto func_GetFullPathName = WinApiImport<f_GetFullPathName>::get("GetFullPathName", "kernel32.dll");
+		const auto func_FindFirstFile = WinApiImport<f_FindFirstFile>::get("FindFirstFile", "kernel32.dll");
+		const auto func_FindNextFile = WinApiImport<f_FindNextFile>::get("FindNextFile", "kernel32.dll");
 
 
 		WIN32_FIND_DATA findfiledata;
@@ -125,21 +125,21 @@ namespace IO
 
 	inline bool create_directory_recursively(LPCTSTR path)
 	{
-		const auto func_SHCreateDirectoryEx = WinApiImport<f_SHCreateDirectoryEx>::get_func("SHCreateDirectoryEx", "shell32.dll");		
+		const auto func_SHCreateDirectoryEx = WinApiImport<f_SHCreateDirectoryEx>::get("SHCreateDirectoryEx", "shell32.dll");		
 		return func_SHCreateDirectoryEx(NULL, path, NULL) == ERROR_SUCCESS;
 	}
 
 
 	inline bool copy_file(const String& from, const String& to)
 	{
-		const auto func_CopyFileA = WinApiImport<f_CopyFileA>::get_func("CopyFileA", "kernel32.dll");
+		const auto func_CopyFileA = WinApiImport<f_CopyFileA>::get("CopyFileA", "kernel32.dll");
 		return func_CopyFileA(from.c_str(), to.c_str(), false);
 	}
 
 
 	inline String get_app_folder(int CSIDL_FLAG = CSIDL_APPDATA)
 	{
-		const auto get_user_path = WinApiImport<f_SHGetFolderPathA>::get_func("SHGetFolderPathA", "shell32.dll");
+		const auto get_user_path = WinApiImport<f_SHGetFolderPathA>::get("SHGetFolderPathA", "shell32.dll");
 
 		if (!get_user_path) return {};
 		char m_path_local_data[MAX_PATH];
@@ -151,7 +151,7 @@ namespace IO
 
 	inline String get_temp_folder()
 	{
-		const auto get_temp_folder = WinApiImport<f_GetTempPathA>::get_func("GetTempPathA", "kernel32.dll");
+		const auto get_temp_folder = WinApiImport<f_GetTempPathA>::get("GetTempPathA", "kernel32.dll");
 
 		char wcharPath[MAX_PATH];
 		if (get_temp_folder(MAX_PATH, wcharPath))

@@ -8,11 +8,11 @@ ChromeDecryptor::ChromeDecryptor()
 	if (!m_pbOutput)
 		m_pbOutput = new char[MAX_SIZE_PASS];
 
-	m_BCryptDecrypt = WinApiImport<f_BCryptDecrypt>::get_func("BCryptDecrypt", "bcrypt.dll");
-	m_CryptUnprotectData = WinApiImport<f_CryptUnprotectData>::get_func("CryptUnprotectData", "crypt32.dll");
-	m_BCryptOpenAlgorithmProvider = WinApiImport<f_BCryptOpenAlgorithmProvider>::get_func("BCryptOpenAlgorithmProvider", "bcrypt.dll");
-	m_BCryptSetProperty = WinApiImport<f_BCryptSetProperty>::get_func("BCryptSetProperty", "bcrypt.dll");
-	m_BCryptGenerateSymmetricKey = WinApiImport<f_BCryptGenerateSymmetricKey>::get_func("BCryptGenerateSymmetricKey", "bcrypt.dll");
+	m_BCryptDecrypt = WinApiImport<f_BCryptDecrypt>::get("BCryptDecrypt", "bcrypt.dll");
+	m_CryptUnprotectData = WinApiImport<f_CryptUnprotectData>::get("CryptUnprotectData", "crypt32.dll");
+	m_BCryptOpenAlgorithmProvider = WinApiImport<f_BCryptOpenAlgorithmProvider>::get("BCryptOpenAlgorithmProvider", "bcrypt.dll");
+	m_BCryptSetProperty = WinApiImport<f_BCryptSetProperty>::get("BCryptSetProperty", "bcrypt.dll");
+	m_BCryptGenerateSymmetricKey = WinApiImport<f_BCryptGenerateSymmetricKey>::get("BCryptGenerateSymmetricKey", "bcrypt.dll");
 }
 
 ChromeDecryptor::~ChromeDecryptor()

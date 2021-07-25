@@ -118,7 +118,7 @@ String FireFoxParser::get_mozilla_program_dir(const String& temp_dir)
 
 	try
 	{
-		return ini_reader["Compatibility.LastPlatformDir"];
+		return static_cast<std::string>(ini_reader["Compatibility.LastPlatformDir"]);
 	}
 	catch (...)
 	{
