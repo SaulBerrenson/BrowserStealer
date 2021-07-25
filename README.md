@@ -10,6 +10,8 @@ Simple password/cookies/history/bookmarks stealer/dumper for chrome all version 
 - Hidden import table (hidden - shell32, functions from kernel32, bcrypt and etc.)
 - Small size
 - Full actions based on hidden winapi calls
+- No dependencies (almost all code is c or mix c++ with minimal using)
+- Added static linking for no dependencies.
 
 --------------------------------------------------
 

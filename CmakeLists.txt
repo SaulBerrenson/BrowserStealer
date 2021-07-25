@@ -8,14 +8,29 @@ include(cmake/CheckVariable.cmake)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_definitions(-DCJSON_HIDE_SYMBOLS)
+
+
 if(MSVC)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi /Ox /O1 /EHa")	
+    set(CMAKE_CXX_FLAGS_RELEASE "/MT  /GS /analyze- /W3 /Zc:wchar_t /Gm- /O1 /Ob1 /Zc:inline /fp:precise /errorReport:prompt /WX- /Zc:forScope /GR /Gd /Oy- /EHsc /nologo")
 endif()
 
 INCLUDE_DIRECTORIES(
     miscs
     includes
 )
+
+
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    message(" ")
+    message("CMAKE IN DEBUG MODE")
+    message(" ")
+elseif(CMAKE_BUILD_TYPE MATCHES Release)
+    message(" ")
+    message("CMAKE IN RELEASE MODE")
+    message(" ")
+endif ()
+
 
 file(GLOB_RECURSE HEADERS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/includes/*.h")
 

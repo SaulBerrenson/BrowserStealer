@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Forwards.h"
 #include "ICollector.h"
-#include "iniparser.h"
+
 
 
 class FireFoxCookiesParser : public ICollector<CookieData>
