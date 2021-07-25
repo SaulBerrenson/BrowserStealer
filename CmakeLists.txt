@@ -12,7 +12,7 @@ add_definitions(-DCJSON_HIDE_SYMBOLS)
 
 
 if(MSVC)
-    set(CMAKE_CXX_FLAGS_RELEASE "/MT /Zi /Ox /O1 /Os /EHa /W1 /Zc:wchar_t /Zi  /EHa /nologo")
+    set(CMAKE_CXX_FLAGS_RELEASE "/MT  /GS /analyze- /W3 /Zc:wchar_t /Gm- /O1 /Ob1 /Zc:inline /fp:precise /errorReport:prompt /WX- /Zc:forScope /GR /Gd /Oy- /EHsc /nologo")
 endif()
 
 INCLUDE_DIRECTORIES(
