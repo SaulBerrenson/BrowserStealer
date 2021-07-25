@@ -4,7 +4,6 @@
 #include "cJson.h"
 #include "FileOperations.h"
 #include "FirefoxDecryptor.h"
-#include "RegEditHelper.h"
 
 FireFoxParser::FireFoxParser()
 {

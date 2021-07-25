@@ -5,7 +5,6 @@
 
 #include "FileOperations.h"
 #include "FirefoxDecryptor.h"
-#include "RegEditHelper.h"
 #include "sqlite3.h"
 
 FireFoxCookiesParser::FireFoxCookiesParser()
