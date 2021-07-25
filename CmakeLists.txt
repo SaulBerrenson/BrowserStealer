@@ -8,6 +8,9 @@ include(cmake/CheckVariable.cmake)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_definitions(-DCJSON_HIDE_SYMBOLS)
+
+
 if(MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi /Ox /O1 /EHa")	
 endif()
@@ -16,6 +19,7 @@ INCLUDE_DIRECTORIES(
     miscs
     includes
 )
+
 
 file(GLOB_RECURSE HEADERS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/includes/*.h")
 
